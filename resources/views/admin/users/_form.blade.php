@@ -34,6 +34,15 @@
         <input id="password_confirmation" type="password" name="password_confirmation" class="input" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef9">
     </div>
 
+    <div style="margin-bottom:12px">
+        <label for="role" style="display:block;margin-bottom:6px">ตำแหน่ง</label>
+        <select id="role" name="role" class="input" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef9;background:#fbfeff;color:#0f172a">
+            <option value="">-- เลือกตำแหน่ง --</option>
+            <option value="employee" {{ old('role', optional($user)->role) === 'employee' ? 'selected' : '' }}>พนักงาน</option>
+            <option value="owner" {{ old('role', optional($user)->role) === 'owner' ? 'selected' : '' }}>เจ้าของร้าน</option>
+        </select>
+    </div>
+
     <div style="display:flex;gap:10px;align-items:center">
         <button type="submit" class="btn">บันทึก</button>
         <a href="{{ route('users.index') }}" style="color:#6b7280;text-decoration:none">ยกเลิก</a>

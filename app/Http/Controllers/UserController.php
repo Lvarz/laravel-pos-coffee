@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('id','desc')->paginate(12);
+        $users = User::orderBy('id','asc')->paginate(12);
         return view('admin.users.index', compact('users'));
     }
 
@@ -25,12 +25,14 @@ class UserController extends Controller
             'name' => ['required','string','max:255'],
             'email' => ['required','email','max:255','unique:users,email'],
             'password' => ['required','string','min:6','confirmed'],
+            'role' => ['required','in:owner,employee'],
         ]);
 
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => $data['role'],
         ]);
 
         return redirect()->route('users.index')->with('success', 'สร้างผู้ใช้เสร็จเรียบร้อย');
@@ -47,10 +49,12 @@ class UserController extends Controller
             'name' => ['required','string','max:255'],
             'email' => ['required','email','max:255','unique:users,email,'.$user->id],
             'password' => ['nullable','string','min:6','confirmed'],
+            'role' => ['required','in:owner,employee'],
         ]);
 
         $user->name = $data['name'];
         $user->email = $data['email'];
+        $user->role = $data['role'];
 
         if (!empty($data['password'])) {
             $user->password = Hash::make($data['password']);
